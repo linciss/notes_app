@@ -18,6 +18,7 @@ from login_window import LoginWindow
 from main_window import MainWindow
 from settings_window import SettingsWindow
 from note_editor import NoteEditor
+from note_preview import NotePreview
 
 class WindowManager(ScreenManager):
     pass
