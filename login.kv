@@ -168,6 +168,7 @@
 <NoteEditor>:
     note: note
     color: color
+    category_btn: category_btn
 
 
     canvas.before:
@@ -180,20 +181,14 @@
     FloatLayout:
         size: root.width, root.height
 
-        RoundedButton:
-            text: "Atpakaļ!"
-            pos_hint: {"x": 0.01, "y": 0.945}
-            size_hint: 0.2, 0.05
-            font_size: min(root.width, root.height) * 0.03
-            on_release:
-                root.go_back()
+ 
 
         # Sveiciena uzraksts ar lietotājvārdu
         Label:
             text: "Piezīmju Menedžeris"
-            pos_hint: {"x": 0, "top": 0.93}
-            size_hint: 1, 0.15
-            font_size: min(root.width, root.height) * 0.08
+            pos_hint: {"x": 0, "top": 1}
+            size_hint: 1, 0.05
+            font_size: min(root.width, root.height) * 0.04
             color: 0.2, 0.4, 0.8, 1
             bold: True
             canvas.before:
@@ -203,9 +198,18 @@
                     pos: self.pos
                     size: self.size
 
+        RoundedButton:
+            text: "Atpakaļ!"
+            pos_hint: {"x": 0.01, "y": 0.945}
+            size_hint: 0.2, 0.05
+            font_size: min(root.width, root.height) * 0.03
+            z: 10
+            on_release:
+                root.go_back()
+
         Label:
             text: "Piezīme:"
-            pos_hint: {"x": 0.1, "top": 0.75}
+            pos_hint: {"x": 0.1, "top": 0.90}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.06
             color: 0.2, 0.4, 0.8, 1
@@ -215,7 +219,7 @@
         RoundedTextInput:
             id: note
             multiline: False
-            pos_hint: {"x": 0.1, "top": 0.65}
+            pos_hint: {"x": 0.1, "top": 0.80}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.05
             padding: [10, 10]
@@ -225,7 +229,7 @@
 
         Label:
             text: "Krāsa: (HEX)"
-            pos_hint: {"x": 0.1, "top": 0.55}
+            pos_hint: {"x": 0.1, "top": 0.70}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.06
             color: 0.2, 0.4, 0.8, 1
@@ -235,7 +239,7 @@
         RoundedTextInput:
             id: color
             multiline: False
-            pos_hint: {"x": 0.1, "top": 0.45}
+            pos_hint: {"x": 0.1, "top": 0.60}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.05
             padding: [15, 15]
@@ -243,6 +247,22 @@
             foreground_color: 0.2, 0.4, 0.8, 1
             hint_text_color: 0.5, 0.6, 0.8, 1
 
+        Label:
+            text: "Kategorija:"
+            pos_hint: {"x": 0.1, "top": 0.50}
+            size_hint: 0.8, 0.1
+            font_size: min(root.width, root.height) * 0.06
+            color: 0.2, 0.4, 0.8, 1
+            bold: True
+            halign: 'left'
+
+        Button:
+            id: category_btn
+            text: "Izvēlies kategoriju"
+            pos_hint: {"x": 0.1, "top": 0.40}
+            size_hint: 0.8, 0.1
+            on_release: dropdown.open(self)
+            
 
         # Izlogošanās poga
         RoundedButton:
@@ -263,6 +283,30 @@
 
             on_release:     
                 root.delete_note()
+
+    DropDown:
+        id: dropdown
+        auto_dismiss: True
+        on_select: category_btn.text = args[1]
+        on_parent:
+            if self.parent: self.bind(on_select=category_btn.setter('text'))
+        Button:
+            text: 'Darbs'
+            size_hint_y: None
+            height: 44
+            on_release: dropdown.select('Darbs')
+
+        Button:
+            text: 'Skola'
+            size_hint_y: None
+            height: 44
+            on_release: dropdown.select('Skola')
+
+        Button:
+            text: 'Personīgais'
+            size_hint_y: None
+            height: 44
+            on_release: dropdown.select('Personīgais')
 
 
 
@@ -318,9 +362,9 @@
         # Sveiciena uzraksts ar lietotājvārdu
         Label:
             text: root.welcome_text
-            pos_hint: {"x": 0, "top": 0.95}
-            size_hint: 1, 0.15
-            font_size: min(root.width, root.height) * 0.08
+            pos_hint: {"x": 0, "top": 1}
+            size_hint: 1, 0.05
+            font_size: min(root.width, root.height) * 0.04
             color: 0.2, 0.4, 0.8, 1
             bold: True
             canvas.before:
@@ -332,7 +376,7 @@
         
         RoundedButton:
             text: "Izveidot piezīmi"
-            pos_hint: {"x": 0.30, "y": 0.70}
+            pos_hint: {"x": 0.30, "y": 0.85}
             size_hint: 0.4, 0.05
             font_size: min(root.width, root.height) * 0.04
             on_release:
@@ -340,7 +384,7 @@
 
         
         Label:
-            pos_hint: {"x": 0.1, "top": 0.72}
+            pos_hint: {"x": 0.1, "top": 0.88}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.04
             color: 0.2, 0.4, 0.8, 1
@@ -350,7 +394,7 @@
 
         # Piezimes saraksts
         ScrollView:
-            pos_hint: {"x": 0.1, "top": 0.65}
+            pos_hint: {"x": 0.1, "top": 0.81}
             size_hint: 0.8, 0.5
             GridLayout:
                 id: notes
