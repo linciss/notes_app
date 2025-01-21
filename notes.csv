@@ -1,8 +1,2 @@
-note_id,user_id,note,color
-1,1,Hello world,#ffffff
-2,1,hello Wolrd,#ffffff
-3,1,123456,#ffffff
-4,1,123456,#123456
-5,1,Testsss sarkans,#ff0000
-6,1,tewest zils,#0000ff
-7,1,test zals	,#00ff00
+note_id,user_id,title,note,color,category
+
