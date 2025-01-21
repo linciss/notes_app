@@ -29,9 +29,33 @@ class MainWindow(Screen):
                 Color(0.2, 0.4, 0.8, 1) 
                 Rectangle(pos=note_label.pos, size=note_label.size)
             note_label.bind(pos=self.update_rect, size=self.update_rect)
-            
+
+            note_label.bind(on_touch_down=(self.on_note_click))
+
             self.ids.notes.add_widget(note_label)
 
+
+    def on_note_click(self, instance, touch):
+        if instance.collide_point(*touch.pos):
+            note_editor = self.manager.get_screen('note_editor')
+
+            print(instance.color, instance.text)
+
+            note_editor.user_id = self.id
+            note_editor.note.text = instance.text
+
+            print(instance.color, self.rgba_to_hex(instance.color))
+            note_editor.color.text = self.rgba_to_hex(instance.color)
+
+
+            self.manager.current = 'note_editor'
+
+    def rgba_to_hex(self, rgba):
+        return '#{:02x}{:02x}{:02x}'.format(
+            int(rgba[0] * 255),
+            int(rgba[1] * 255),
+            int(rgba[2] * 255),
+        )
 
     def update_rect(self, instance, value):
         instance.canvas.before.clear()
