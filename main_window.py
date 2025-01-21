@@ -28,7 +28,7 @@ class MainWindow(Screen):
             note_label.bind(pos=lambda instance, value, note_color=note['color']: self.update_rect(instance, value, note_color))
             note_label.bind(size=lambda instance, value, note_color=note['color']: self.update_rect(instance, value, note_color))
 
-            note_label.bind(on_touch_down=lambda instance, touch, note_id=note['id'], note_color=note['color']: self.on_note_click(instance, touch, note_id, note_color))
+            note_label.bind(on_touch_down=lambda instance, touch, note_id=note['id'], note_color=note['color'], note_category=note['category']: self.on_note_click(instance, touch, note_id, note_color, note_category))
 
             self.ids.notes.add_widget(note_label)
 
@@ -37,7 +37,7 @@ class MainWindow(Screen):
         return tuple(int(hex[i:i+2], 16) / 255 for i in (0, 2, 4)) + (1.0,)
     
 
-    def on_note_click(self, instance, touch, note_id, note_color):
+    def on_note_click(self, instance, touch, note_id, note_color, note_category):
         if instance.collide_point(*touch.pos):
             note_editor = self.manager.get_screen('note_editor')
 
@@ -46,6 +46,7 @@ class MainWindow(Screen):
             note_editor.note.text = instance.text
             note_editor.edit = True
             note_editor.note_id = note_id
+            note_editor.ids.category_btn.text = note_category
 
             note_editor.color.text = note_color
 
@@ -92,7 +93,8 @@ class MainWindow(Screen):
                             note = {
                                 'note': row['note'],
                                 'color': row['color'],
-                                'id': row['note_id']
+                                'id': row['note_id'],
+                                'category': row['category']
                             }
                             notes_list.append(note)
             
