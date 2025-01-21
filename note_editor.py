@@ -8,6 +8,7 @@ class NoteEditor(Screen):
     user_id = StringProperty("")
     note = ObjectProperty(None)
     color = ObjectProperty(None)
+    edit = False
     # catgeory = ObjectProperty(None)
 
 
@@ -40,6 +41,11 @@ class NoteEditor(Screen):
                 self.show_popup("Error", "Ievadi tekstu")
         except Exception as e:
             self.show_popup("Error", f"Failed to create note: {str(e)}")
+
+
+    def go_back(self): 
+        self.manager.current = 'main'
+        
 
 
     def get_row_count(self):

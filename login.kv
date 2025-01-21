@@ -160,10 +160,18 @@
     FloatLayout:
         size: root.width, root.height
 
+        RoundedButton:
+            text: "Atpakaļ!"
+            pos_hint: {"x": 0.01, "y": 0.945}
+            size_hint: 0.2, 0.05
+            font_size: min(root.width, root.height) * 0.03
+            on_release:
+                root.go_back()
+
         # Sveiciena uzraksts ar lietotājvārdu
         Label:
             text: "Piezīmju Menedžeris"
-            pos_hint: {"x": 0, "top": 0.95}
+            pos_hint: {"x": 0, "top": 0.93}
             size_hint: 1, 0.15
             font_size: min(root.width, root.height) * 0.08
             color: 0.2, 0.4, 0.8, 1
