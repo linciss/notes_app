@@ -30,21 +30,21 @@ class MainWindow(Screen):
                 Rectangle(pos=note_label.pos, size=note_label.size)
             note_label.bind(pos=self.update_rect, size=self.update_rect)
 
-            note_label.bind(on_touch_down=(self.on_note_click))
+            note_label.bind(on_touch_down=lambda instance, touch, note_id=note['id']: self.on_note_click(instance, touch, note_id))
 
             self.ids.notes.add_widget(note_label)
 
 
-    def on_note_click(self, instance, touch):
+    def on_note_click(self, instance, touch, note_id):
         if instance.collide_point(*touch.pos):
             note_editor = self.manager.get_screen('note_editor')
 
-            print(instance.color, instance.text)
 
             note_editor.user_id = self.id
             note_editor.note.text = instance.text
+            note_editor.edit = True
+            note_editor.note_id = note_id
 
-            print(instance.color, self.rgba_to_hex(instance.color))
             note_editor.color.text = self.rgba_to_hex(instance.color)
 
 
@@ -60,7 +60,7 @@ class MainWindow(Screen):
     def update_rect(self, instance, value):
         instance.canvas.before.clear()
         with instance.canvas.before:
-            Color(0.2, 0.4, 0.8, 1)  # Background color
+            Color(0.2, 0.4, 0.8, 1)  
             Rectangle(pos=instance.pos, size=instance.size)
                 
     def new_note(self):
@@ -72,7 +72,7 @@ class MainWindow(Screen):
 
     def logout_button(self):
         self.current_user = ""
-        self.welcome_text = "Welcome!"
+        self.welcome_text = "Sveiks!"
         self.manager.current = 'login'
 
     def on_enter(self):
@@ -88,7 +88,8 @@ class MainWindow(Screen):
                         if row['user_id'] == self.id:
                             note = {
                                 'note': row['note'],
-                                'color': row['color']
+                                'color': row['color'],
+                                'id': row['note_id']
                             }
                             notes_list.append(note)
             
