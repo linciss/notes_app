@@ -12,6 +12,7 @@ import re
 class NoteEditor(Screen):
     user_id = StringProperty("")
     note = ObjectProperty(None)
+    note_title = ObjectProperty(None)
     color = ObjectProperty(None)
     edit = False
     note_id = StringProperty("")
@@ -19,8 +20,17 @@ class NoteEditor(Screen):
 
 
     def create_note(self):
+        title = self.ids.note_title.text
         note = self.ids.note.text
         color = self.ids.color.text
+
+        if note == "":
+            self.show_popup("Error", "Ievadi tekstu")
+            return
+        if title == "":
+            self.show_popup("Error", "Ievadi nosaukumu")
+            return  
+    
         if(color == ""):
             color = "#FFFFFF"
         
@@ -47,7 +57,7 @@ class NoteEditor(Screen):
         try:
             if note:
                 with open('notes.csv', 'a', encoding='utf-8', newline='') as file:
-                    file.write(f"{self.get_row_count()},{self.user_id},{note},{color},{category}\n")
+                    file.write(f"{self.get_row_count()},{self.user_id},{title},{note},{color},{category}\n")
                 self.ids.note.text = ""
                 self.ids.color.text = ""
                 self.show_popup("Success", "Piezīme pievienota")
@@ -63,6 +73,9 @@ class NoteEditor(Screen):
         self.edit = False
         self.ids.category_btn.text = "Izvēlies kategoriju"
         self.manager.current = 'main'
+        self.note = ""
+        self.note_title = ""
+
        
     def get_row_count(self):
         try:
@@ -90,7 +103,7 @@ class NoteEditor(Screen):
                         row['category'] = self.ids.category_btn.text
                     note_data.append(row)
             with open('notes.csv', 'w', encoding='utf-8', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'note', 'color', 'category'])
+                writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'title', 'note', 'color', 'category'])
                 writer.writeheader()
                 writer.writerows(note_data)
             self.ids.note.text = ""
@@ -113,31 +126,3 @@ class NoteEditor(Screen):
         popup = Popup(title=title, content=layout, size_hint=(0.75, 0.5))
         button.bind(on_release=popup.dismiss)
         popup.open()
-
-    def delete_note(self):
-        try:
-            note_data = []
-            with open('notes.csv', 'r', encoding='utf-8') as file:
-                reader = csv.DictReader(file, delimiter=',')
-                for row in reader:
-                    if row['note_id'] != self.note_id:
-                        note_data.append(row)
-            with open('notes.csv', 'w', encoding='utf-8', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'note', 'color'])
-                writer.writeheader()
-                writer.writerows(note_data)
-            self.ids.note.text = ""
-            self.ids.color.text = ""
-            self.note_id = ""
-            self.edit = False
-            self.show_popup("Success", "Piezīme dzēsta")
-            self.manager.current = 'main'
-        except Exception as e:
-            self.show_popup("Error", f"Error: {str(e)}")
-
-
-
-    def logout_button(self):
-        self.current_user = ""
-        self.welcome_text = "Welcome!"
-        self.manager.current = 'login'
