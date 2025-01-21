@@ -2,6 +2,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.properties import StringProperty, ObjectProperty
 import os
 import csv
+import re
 
 class NoteEditor(Screen):
     user_id = StringProperty("")
@@ -17,8 +18,15 @@ class NoteEditor(Screen):
             color = "#FFFFFF"
         
         if len(color) != 7 or color[0] != "#":
-            self.show_popup("Error", "Please enter a valid color in hex format")
+            self.show_popup("Error", "Ievadi hex kodu ar #")
             return
+        
+        match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
+
+        if not match:
+            self.show_popup("Error", "Ievadi pareizu hex kodu")
+            return
+
         
         print(color)
         try:
@@ -29,7 +37,7 @@ class NoteEditor(Screen):
                 self.ids.color.text = ""
                 self.manager.current = 'main'
             else:
-                self.show_popup("Error", "Please enter a note")
+                self.show_popup("Error", "Ievadi tekstu")
         except Exception as e:
             self.show_popup("Error", f"Failed to create note: {str(e)}")
 

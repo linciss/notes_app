@@ -24,7 +24,7 @@ class MainWindow(Screen):
             text=note['note'],
             size_hint_y=None,
             height=40,
-            color=('#123456'))
+            color=(note['color']))
             with note_label.canvas.before:
                 Color(0.2, 0.4, 0.8, 1) 
                 Rectangle(pos=note_label.pos, size=note_label.size)
