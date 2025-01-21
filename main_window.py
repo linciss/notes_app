@@ -18,6 +18,14 @@ class MainWindow(Screen):
     def update_welcome_text(self):
         self.welcome_text = f"Sveiks, {self.current_user}!"
 
+    def filter_notes(self):
+        self.ids.notes.clear_widgets()
+        notes_list = self.get_notes()
+        notes_list = sorted(notes_list, key=lambda x: x['title'])
+        self.display_notes(notes_list)
+
+
+
     def display_notes(self, notes_list):
         self.ids.notes.clear_widgets()
         for note in notes_list:

@@ -439,7 +439,7 @@
     # Loga fons
     canvas.before:
         Color:
-            rgba: (0.85, 0.95, 1, 1)  # Gaišzils
+            rgba: (0.85, 0.95, 1, 1) 
         Rectangle:
             pos: self.pos
             size: self.size
@@ -465,15 +465,24 @@
         
         RoundedButton:
             text: "Izveidot piezīmi"
-            pos_hint: {"x": 0.30, "y": 0.85}
+            pos_hint: {"x": 0.30, "y": 0.89}
             size_hint: 0.4, 0.05
             font_size: min(root.width, root.height) * 0.04
             on_release:
                 root.new_note()
 
+        RoundedButton:
+            text: "FIltrēt pēc vārda alfabētiski"
+            pos_hint: {"x": 0.223, "y": 0.83}
+            size_hint: 0.55, 0.05
+            font_size: min(root.width, root.height) * 0.04
+            on_release:
+                root.filter_notes()
+
+
         
         Label:
-            pos_hint: {"x": 0.1, "top": 0.88}
+            pos_hint: {"x": 0.1, "top": 0.86}
             size_hint: 0.8, 0.1
             font_size: min(root.width, root.height) * 0.04
             color: 0.2, 0.4, 0.8, 1
@@ -483,7 +492,7 @@
 
         # Piezimes saraksts
         ScrollView:
-            pos_hint: {"x": 0.05, "top": 0.81}
+            pos_hint: {"x": 0.05, "top": 0.79}
             size_hint: 0.9, 0.5
             GridLayout:
                 id: notes
