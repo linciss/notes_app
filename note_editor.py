@@ -4,6 +4,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.dropdown import DropDown
 import os
 import csv
 import re
@@ -14,12 +15,10 @@ class NoteEditor(Screen):
     color = ObjectProperty(None)
     edit = False
     note_id = StringProperty("")
-    # catgeory = ObjectProperty(None)
+    category = StringProperty("Izvēlies kategoriju")
 
 
     def create_note(self):
-        
-        
         note = self.ids.note.text
         color = self.ids.color.text
         if(color == ""):
@@ -27,6 +26,12 @@ class NoteEditor(Screen):
         
         if len(color) != 7 or color[0] != "#":
             self.show_popup("Error", "Ievadi hex kodu ar # zīmi priekšā vai pārbaudi vai ir 7 simboli") 
+            return
+        
+        category = self.ids.category_btn.text
+
+        if category == "Izvēlies kategoriju":
+            self.show_popup("Error", "Lūdzu izvēlies kategoriju")
             return
         
         match = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', color)
@@ -42,11 +47,11 @@ class NoteEditor(Screen):
         try:
             if note:
                 with open('notes.csv', 'a', encoding='utf-8', newline='') as file:
-                    file.write(f"{self.get_row_count()},{self.user_id},{note},{color}\n")
+                    file.write(f"{self.get_row_count()},{self.user_id},{note},{color},{category}\n")
                 self.ids.note.text = ""
                 self.ids.color.text = ""
-                self.edit = False
-                self.manager.current = 'main'
+                self.show_popup("Success", "Piezīme pievienota")
+                self.go_back()
             else:
                 self.show_popup("Error", "Ievadi tekstu")
         except Exception as e:
@@ -56,6 +61,7 @@ class NoteEditor(Screen):
 
     def go_back(self): 
         self.edit = False
+        self.ids.category_btn.text = "Izvēlies kategoriju"
         self.manager.current = 'main'
        
     def get_row_count(self):
@@ -81,17 +87,17 @@ class NoteEditor(Screen):
                     if row['note_id'] == self.note_id:
                         row['note'] = note
                         row['color'] = color
+                        row['category'] = self.ids.category_btn.text
                     note_data.append(row)
             with open('notes.csv', 'w', encoding='utf-8', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'note', 'color'])
+                writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'note', 'color', 'category'])
                 writer.writeheader()
                 writer.writerows(note_data)
             self.ids.note.text = ""
             self.ids.color.text = ""
             self.note_id = ""
-            self.edit = False
             self.show_popup("Success", "Piezīme rediģēta")
-            self.manager.current = 'main'
+            self.go_back()
         except Exception as e:
             self.show_popup("Error", f"Error: {str(e)}")
         
