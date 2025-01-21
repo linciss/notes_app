@@ -24,11 +24,12 @@ class LoginWindow(Screen):
     
 
     def login_button(self):
-        self.username.text = 'admin'
-        self.password.text = 'admin'
+
         if self.verify_user(self.username.text, self.password.text):
             print("Login successful!")
+
             main_screen = self.manager.get_screen('main')
+            main_screen.ids.notes.clear_widgets()
             main_screen.current_user = self.username.text
             main_screen.id = self.id
             main_screen.update_welcome_text()
