@@ -19,23 +19,25 @@ class MainWindow(Screen):
     def display_notes(self, notes_list):
         self.ids.notes.clear_widgets()
         for note in notes_list:
-            print(note)
             note_label = Label(
             text=note['note'],
             size_hint_y=None,
             height=40,
-            color=(note['color']))
-            with note_label.canvas.before:
-                Color(0.2, 0.4, 0.8, 1) 
-                Rectangle(pos=note_label.pos, size=note_label.size)
-            note_label.bind(pos=self.update_rect, size=self.update_rect)
+            color=(1,1,1,1))
 
-            note_label.bind(on_touch_down=lambda instance, touch, note_id=note['id']: self.on_note_click(instance, touch, note_id))
+            note_label.bind(pos=lambda instance, value, note_color=note['color']: self.update_rect(instance, value, note_color))
+            note_label.bind(size=lambda instance, value, note_color=note['color']: self.update_rect(instance, value, note_color))
+
+            note_label.bind(on_touch_down=lambda instance, touch, note_id=note['id'], note_color=note['color']: self.on_note_click(instance, touch, note_id, note_color))
 
             self.ids.notes.add_widget(note_label)
 
+    def hex_to_rgba(self, hex):
+        hex = hex.lstrip('#')
+        return tuple(int(hex[i:i+2], 16) / 255 for i in (0, 2, 4)) + (1.0,)
+    
 
-    def on_note_click(self, instance, touch, note_id):
+    def on_note_click(self, instance, touch, note_id, note_color):
         if instance.collide_point(*touch.pos):
             note_editor = self.manager.get_screen('note_editor')
 
@@ -45,7 +47,7 @@ class MainWindow(Screen):
             note_editor.edit = True
             note_editor.note_id = note_id
 
-            note_editor.color.text = self.rgba_to_hex(instance.color)
+            note_editor.color.text = note_color
 
 
             self.manager.current = 'note_editor'
@@ -57,10 +59,11 @@ class MainWindow(Screen):
             int(rgba[2] * 255),
         )
 
-    def update_rect(self, instance, value):
+    def update_rect(self, instance, value, note_color):
+        print(note_color)
         instance.canvas.before.clear()
         with instance.canvas.before:
-            Color(0.2, 0.4, 0.8, 1)  
+            Color(*self.hex_to_rgba(note_color))
             Rectangle(pos=instance.pos, size=instance.size)
                 
     def new_note(self):
