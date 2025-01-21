@@ -22,6 +22,7 @@ class MainWindow(Screen):
         self.ids.notes.clear_widgets()
         notes_list = self.get_notes()
         notes_list = sorted(notes_list, key=lambda x: x['title'])
+        print(notes_list)
         self.display_notes(notes_list)
 
 
@@ -109,7 +110,6 @@ class MainWindow(Screen):
         )
 
     def update_rect(self, instance, value, note_color):
-        print(note_color)
         instance.canvas.before.clear()
         with instance.canvas.before:
             Color(*self.hex_to_rgba(note_color))
@@ -129,6 +129,13 @@ class MainWindow(Screen):
 
     def on_enter(self):
         self.display_notes(self.get_notes())
+
+
+    def enter_settings(self):
+        settings_screen = self.manager.get_screen('settings')
+        settings_screen.current_user = self.current_user
+        settings_screen.ids.username.text = self.current_user
+        self.manager.current = 'settings'
 
     def get_notes(self):
         notes_list = []

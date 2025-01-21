@@ -296,16 +296,6 @@
             on_release:
                 root.create_note()
 
-        DeleteButton:
-            text: "Dzēst!"
-            pressed: False
-            pos_hint: {"x": 0.2, "y": 0.02}
-            size_hint: 0.6, 0.1
-            font_size: min(root.width, root.height) * 0.06
-           
-
-            on_release:     
-                root.delete_note()
 
     DropDown:
         id: dropdown
@@ -400,10 +390,50 @@
 
 
 <SettingsWindow>:
+    username: username
     new_password: new_password
+
+    canvas.before:
+        Color:
+            rgba: (0.85, 0.95, 1, 1)  # Gaišzils
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    RoundedButton:
+        text: "Atpakaļ!"
+        pos_hint: {"x": 0.01, "y": 0.945}
+        size_hint: 0.2, 0.05
+        font_size: min(root.width, root.height) * 0.03
+        z: 10
+        on_release:
+            root.go_back()
+
+    Label:
+        text: "Lietotājvārds:"
+        pos_hint: {"x": 0.1, "top": 0.9}
+        size_hint: 0.8, 0.1
+        font_size: min(root.width, root.height) * 0.06
+        color: 0.2, 0.4, 0.8, 1
+        bold: True
+        halign: 'left'
+
+    # Jaunas paroles ievades lauks
+    RoundedTextInput:
+        id: username
+        multiline: False
+        pos_hint: {"x": 0.1, "top": 0.8}
+        size_hint: 0.8, 0.1
+        font_size: min(root.width, root.height) * 0.05
+        padding: [20, 20]
+        hint_text: 'Lietotājvārds'
+        foreground_color: 0.2, 0.4, 0.8, 1
+        hint_text_color: 0.5, 0.6, 0.8, 1
+
+
     Label:
         text: "Jauna Parole:"
-        pos_hint: {"x": 0.1, "top": 0.7}
+        pos_hint: {"x": 0.1, "top": 0.6}
         size_hint: 0.8, 0.1
         font_size: min(root.width, root.height) * 0.06
         color: 0.2, 0.4, 0.8, 1
@@ -415,7 +445,7 @@
         id: new_password
         multiline: False
         password: True
-        pos_hint: {"x": 0.1, "top": 0.6}
+        pos_hint: {"x": 0.1, "top": 0.5}
         size_hint: 0.8, 0.1
         font_size: min(root.width, root.height) * 0.05
         padding: [20, 20]
@@ -425,12 +455,12 @@
 
     # Paroles maiņas poga
     RoundedButton:
-        text: "Mainīt paroli"
-        pos_hint: {"x": 0.2, "y": 0.4}
+        text: "Mainīt iestatījumus"
+        pos_hint: {"x": 0.2, "y": 0.2}
         size_hint: 0.6, 0.1
         font_size: min(root.width, root.height) * 0.06
         on_release:
-            root.change_password()
+            root.change_settings()
 
 
 
@@ -504,12 +534,27 @@
 
        
         # Izlogošanās poga
-        RoundedButton:
-            text: "Izlogoties"
-            pos_hint: {"x": 0.2, "y": 0.05}
-            size_hint: 0.6, 0.1
-            font_size: min(root.width, root.height) * 0.06
-            on_release:
-                root.logout_button()
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+            padding: 10
+
+
+            DeleteButton:
+                text: "Izlogoties"
+                pos_hint: {"x": 0.0, "y": 0.05}
+                size_hint: 0.1, 0.05
+                font_size: min(root.width, root.height) * 0.03
+
+                on_release:
+                    root.logout_button()
+
+            RoundedButton:
+                text: "Iestatījumi"
+                pos_hint: {"x": 0.0, "y": 0.05}
+                size_hint: 0.1, 0.05
+                font_size: min(root.width, root.height) * 0.03
+                on_release:
+                    root.enter_settings()
 
 

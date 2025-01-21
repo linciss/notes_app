@@ -24,7 +24,8 @@ class LoginWindow(Screen):
     
 
     def login_button(self):
-
+        # self.username.text = 'admin'
+        # self.password.text = 'admin'
         if self.verify_user(self.username.text, self.password.text):
             print("Login successful!")
 

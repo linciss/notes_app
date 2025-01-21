@@ -1,2 +1,9 @@
 note_id,user_id,title,note,color,category
-
+1,1,hi,Hello worldasdasdasddas,#000000,Skola
+2,1,hi2,hello 123,#999999,Darbs
+3,1,hi3,123456,#ff0000,Darbs
+4,1,piezime1,izdarit kko,#ff0000,Darbs
+5,1,piezime2,asfasfjhasfjhasfjashkfjashkfashjkfajkhfajkhfasjkfhasfjkhasfkjahsfkjashfjkashfkjashfkashfgaskjfhaskdfjhasfjkhasfkjhasfjkhasfjkhasfjkhasfjkhasfkjhasfkjasfhjkasfhasjkfhasfjkhasfjkhasfkjashfkjashfjkashf,#555555,Darbs
+6,1,aaaa,aaaa,#aaaaaa,Darbs
+7,2,cau,Ka tev iet?asdasdasdasdasdasdasds,#123456,Darbs
+8,2,aaaaa,aaaaaa,#111111,Darbs

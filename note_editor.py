@@ -98,6 +98,7 @@ class NoteEditor(Screen):
                 rows = list(reader)
                 for row in rows:
                     if row['note_id'] == self.note_id:
+                        row['title'] = self.ids.note_title.text
                         row['note'] = note
                         row['color'] = color
                         row['category'] = self.ids.category_btn.text
@@ -108,6 +109,7 @@ class NoteEditor(Screen):
                 writer.writerows(note_data)
             self.ids.note.text = ""
             self.ids.color.text = ""
+            
             self.note_id = ""
             self.show_popup("Success", "Piezīme rediģēta")
             self.go_back()
