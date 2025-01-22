@@ -118,6 +118,12 @@ class MainWindow(Screen):
     def new_note(self):
         note_editor = self.manager.get_screen('note_editor')
         note_editor.user_id = self.id
+        note_editor.edit = False
+        note_editor.ids.note_title.text = ""
+        note_editor.ids.note.text = ""
+        note_editor.ids.color.text = ""
+        note_editor.ids.category_btn.text = "Izvēlies kategoriju"
+
 
         self.manager.current = 'note_editor'
 
