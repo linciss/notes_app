@@ -72,7 +72,7 @@ class MainWindow(Screen):
                         if row['note_id'] != note_id:
                             note_data.append(row)
                 with open('notes.csv', 'w', encoding='utf-8', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id', 'note', 'color', 'category'])
+                    writer = csv.DictWriter(file, fieldnames=['note_id', 'user_id','title', 'note', 'color', 'category'])
                     writer.writeheader()
                     writer.writerows(note_data)
                 self.display_notes(self.get_notes())
